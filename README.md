@@ -2,13 +2,6 @@
 
 This file contains the instructions needed to initialize and run the project locally.
 
-- Contributors:
-- NAGINENI SAI VINEETH — S20230010159
-- MUTYALA SAI PAVAN KUMAR — S20230010157
-- NAGOLU SRIMANTH REDDY — S20230010160
-- GAJJALA SUDHA HARISH REDDY — S20230010085
-- MOOD NARENDAR — S20230010149
-
 Project overview:
 - Project name: MEDIQUICK — a telemedicine website combining a React frontend and a Node.js/Express backend with MongoDB.
 - Purpose: Manage patients, doctors, suppliers, employees and admins; handle appointments, prescriptions, orders, medicine inventory and basic chat/notifications.
