@@ -1,24 +1,62 @@
-// utils/alerts.js
+// Frontend alerts utility
+// This is a browser-specific implementation that shows visual notifications
 
 /**
- * Displays a toast notification message (server-side friendly).
- * On the backend this will log and return a structured object. In frontend
- * environment you can replace this implementation or create a browser-only
- * helper that manipulates DOM to show Bootstrap toasts.
- * @param {string} message
- * @param {'success'|'warning'|'danger'|'info'} type
+ * Displays a toast notification message using Bootstrap classes.
+ * @param {string} message - The message to display
+ * @param {'success' | 'warning' | 'danger' | 'info'} type - The type of alert
  */
-function showMessage(message, type = 'info') {
-    console.log(`[${type.toUpperCase()}] ${message}`);
-    return { message, type };
-}
+export const showMessage = (message, type = 'info') => {
+    // Create toast container if it doesn't exist
+    let toastContainer = document.getElementById('toast-container');
+    if (!toastContainer) {
+        toastContainer = document.createElement('div');
+        toastContainer.id = 'toast-container';
+        toastContainer.style.cssText = `
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 9999;
+        `;
+        document.body.appendChild(toastContainer);
+    }
+
+    // Create toast element
+    const toast = document.createElement('div');
+    toast.className = `toast ${getToastClass(type)} show`;
+    toast.style.cssText = `
+        min-width: 250px;
+        margin-bottom: 10px;
+        padding: 15px;
+        border-radius: 4px;
+        opacity: 1;
+        transition: opacity 0.3s ease-in-out;
+    `;
+
+    // Add message
+    toast.textContent = message;
+
+    // Add to container
+    toastContainer.appendChild(toast);
+
+    // Auto-remove after delay
+    setTimeout(() => {
+        toast.style.opacity = '0';
+        setTimeout(() => {
+            toastContainer.removeChild(toast);
+            if (toastContainer.children.length === 0) {
+                document.body.removeChild(toastContainer);
+            }
+        }, 300);
+    }, 3000);
+};
 
 /**
- * Helper to get Bootstrap-compatible toast classes (used for styling in components).
- * @param {string} type
- * @returns {string}
+ * Helper to get Bootstrap-compatible toast classes.
+ * @param {string} type - The type of alert
+ * @returns {string} Bootstrap classes for the specified alert type
  */
-function getToastClass(type) {
+export const getToastClass = (type) => {
     switch (type) {
         case 'success': return 'bg-success text-white';
         case 'warning': return 'bg-warning text-dark';
@@ -26,6 +64,4 @@ function getToastClass(type) {
         case 'info': return 'bg-info text-white';
         default: return 'bg-primary text-white';
     }
-}
-
-module.exports = { showMessage, getToastClass };
+};
